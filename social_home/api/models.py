@@ -13,12 +13,31 @@ class Post(models.Model):
     description = models.TextField(max_length=3000, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    @property
+    def post_comments(self):
+        list_comments = []
+        for comment in self.comments.all():
+            list_comments.append({"author":comment.author(), "content": comment.text})
+        return list_comments
+    
+    @property
+    def total_likes(self):
+        return self.likes.count
+    
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='comments')
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     text = models.TextField(max_length=408, blank=False)
 
+    class Meta:
+        unique_together = ('user', 'text')
+        
+    def author(self):
+        return f'{self.user.username}'
+
 class Like(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='likes')
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
 
+    class Meta:
+        unique_together = ('user', 'post')
