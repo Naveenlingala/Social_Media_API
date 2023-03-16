@@ -12,14 +12,14 @@ class ViewPosts(generics.ListAPIView):
     serializer_class = PostsSerializer
 
     def get_queryset(self):
-        return models.Post.objects.filter(user=self.request.user).order_by('created_at')
+        return models.Post.objects.filter(user=self.request.user).order_by('-created_at')
 
 
 class LikePosts(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = LikeSerializer
 
-    # Override Post     
+    # Override Post
     def post(self, request, pk):
         post = models.Post.objects.filter(pk=pk).first()
         if post is None:
@@ -29,7 +29,7 @@ class LikePosts(generics.CreateAPIView):
         like = models.Like.objects.filter(user=user, post=post).first()
         if like is not None:
             return Response({'error': 'Post already liked'}, status=status.HTTP_400_BAD_REQUEST)
-        
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(user=user, post=post)
@@ -61,15 +61,15 @@ class UnlikePosts(generics.DestroyAPIView):
 class FollowUser(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = UserProfileSerializer
-    
+
     def create_or_return_object(self, instance):
         try:
             instance.profile
         except:
-            user_profile = models.UserProfile(user = instance)
+            user_profile = models.UserProfile(user=instance)
             user_profile.save()
 
-        return instance    
+        return instance
 
     def post(self, request, pk):
 
@@ -77,49 +77,49 @@ class FollowUser(generics.CreateAPIView):
         if follow_user is None:
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
-        #Create Porfile if not found
+        # Create Porfile if not found
         follow_user = self.create_or_return_object(follow_user)
         auth_user = self.create_or_return_object(request.user)
-        
+
         if follow_user == auth_user:
             return Response({'error': 'You cannot follow yourself'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        if auth_user.profile.following.filter(id = follow_user.id).exists():
+
+        if auth_user.profile.following.filter(id=follow_user.id).exists():
             return Response({'error': 'You are already following the user'}, status=status.HTTP_400_BAD_REQUEST)
-        #Add followers
+        # Add followers
         follow_user.profile.followers.add(auth_user)
-        #Add following
+        # Add following
         auth_user.profile.following.add(follow_user)
         follow_user.save()
 
-        return Response({'detail':'Follow successful'}, status=status.HTTP_200_OK)
-    
+        return Response({'detail': 'Follow successful'}, status=status.HTTP_200_OK)
+
 
 class UnfollowUser(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = UserProfileSerializer
-    
+
     def delete(self, request, pk):
         follow_user = User.objects.get(pk=pk)
         auth_user = request.user
 
         if follow_user is None:
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-        
+
         if follow_user == auth_user:
             return Response({'error': 'You cannot unfollow yourself'}, status=status.HTTP_400_BAD_REQUEST)
 
-        if auth_user.profile.following.filter(id = follow_user.id).exists():
-            #Add followers
+        if auth_user.profile.following.filter(id=follow_user.id).exists():
+            # Add followers
             follow_user.profile.followers.remove(auth_user)
-            #Add following
+            # Add following
             auth_user.profile.following.remove(follow_user)
             follow_user.save()
         else:
             return Response({'error': 'You are not following the user'}, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response({'detail':'Unfollow successful'},status=status.HTTP_200_OK)
-    
+        return Response({'detail': 'Unfollow successful'}, status=status.HTTP_204_NO_CONTENT)
+
 
 class UserDetails(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated]
@@ -127,7 +127,7 @@ class UserDetails(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user.profile
-    
+
 
 class CreatePostView(generics.CreateAPIView):
     serializer_class = PostCreateSerializer
@@ -139,8 +139,10 @@ class CreatePostView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
         post_data = response.data
-        post_data["created_at"] = datetime.datetime.strptime(post_data["created_at"], '%Y-%m-%dT%H:%M:%S.%fZ')
+        post_data["created_at"] = datetime.datetime.strptime(
+            post_data["created_at"], '%Y-%m-%dT%H:%M:%S.%fZ')
         return Response(post_data, status=status.HTTP_201_CREATED)
+
 
 class DeletePostView(generics.RetrieveDestroyAPIView):
     queryset = models.Post.objects.all()
@@ -150,15 +152,15 @@ class DeletePostView(generics.RetrieveDestroyAPIView):
     def delete(self, request, *args, **kwargs):
         post = self.get_object()
         if post.user != request.user:
-            return Response({"error":"You do not have permission to delete this post"}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"error": "You do not have permission to delete this post"}, status=status.HTTP_403_FORBIDDEN)
         super().delete(request, *args, **kwargs)
-        return Response({"detail":"delete sucessful"}, status=status.HTTP_202_ACCEPTED)
-    
+        return Response({"detail": "delete sucessful"}, status=status.HTTP_202_ACCEPTED)
+
 
 class CreateCommentView(generics.CreateAPIView):
     serializer_class = CommentSerializer
     permission_classes = [IsAuthenticated]
-        
+
     def post(self, request, pk):
         post = models.Post.objects.get(pk=pk)
         if post is None:

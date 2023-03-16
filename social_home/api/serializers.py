@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from . import models
 
+
 class PostsSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Post
@@ -14,6 +15,7 @@ class PostsSerializer(serializers.ModelSerializer):
             'post_comments'
         ]
 
+
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Like
@@ -25,24 +27,27 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = models.UserProfile
         fields = []
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model  = models.UserProfile
+        model = models.UserProfile
         fields = [
             'username',
             'number_of_followers',
             'number_of_following',
-        ]       
+        ]
+
 
 class PostCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Post
         fields = [
-            'id', 
-            'title', 
-            'description', 
+            'id',
+            'title',
+            'description',
             'created_at'
         ]
+
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
