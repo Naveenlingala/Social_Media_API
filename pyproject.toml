@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "social-api"
+name = "SOCIAL_MEDIA_API"
 version = "0.1.0"
 description = ""
 authors = ["naveenlingala <naveenlingala1212@gmail.com>"]
 readme = "README.md"
-packages = [{include = "social_api"}]
+packages = [{include = "SOCIAL_MEDIA_API"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
