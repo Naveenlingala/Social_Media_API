@@ -129,7 +129,7 @@ class UserDetails(generics.RetrieveAPIView):
         try:
             self.request.user.profile
         except:
-            models.UserProfile.create(user=self.request.user)
+            models.UserProfile.objects.create(user=self.request.user)
 
         return self.request.user.profile
 
