@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY', default="fahnfuanbufbauyfahfb")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -82,7 +82,7 @@ WSGI_APPLICATION = "social_home.wsgi.application"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASE_URL = os.environ.get(
-    'DATABASE_URL', default="default='postgresql://postgres:postgres@localhost:5432/mysite'"
+    'DATABASE_URL', default="postgres://social_api_db_mwxf_user:dTWrqPJF65USmehAiY0NvsH8uchoH2hq@dpg-cg9r561mbg5adg1s2ong-a.singapore-postgres.render.com/social_api_db_mwxf"
 )
 
 
@@ -104,6 +104,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
