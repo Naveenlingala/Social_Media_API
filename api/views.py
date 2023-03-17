@@ -126,6 +126,11 @@ class UserDetails(generics.RetrieveAPIView):
     serializer_class = UserSerializer
 
     def get_object(self):
+        try:
+            self.request.user.profile
+        except:
+            models.UserProfile.create(user=self.request.user)
+
         return self.request.user.profile
 
 
