@@ -95,9 +95,6 @@ class UserTestCase(APITestCase):
             username='user_test_2', password='testpass')
         self.profile2 = UserProfile.objects.create(user=self.user2)
 
-        # create a post by user2
-        self.post = Post.objects.create(
-            title='Test post', description='Test description', user=self.user2)
 
         self.client.force_authenticate(user=self.user)
 
