@@ -83,13 +83,13 @@ WSGI_APPLICATION = "social_home.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES_URL = os.environ.get(
+DATABASE_URL = os.environ.get(
     'DATABASE_URL', default="default='postgresql://postgres:postgres@localhost:5432/mysite'"
 )
 
 
 DATABASES = {
-    'default': dj_database_url.parse(os.environ.get(DATABASES_URL))
+    'default': dj_database_url.parse(DATABASE_URL)
 }
 
 
