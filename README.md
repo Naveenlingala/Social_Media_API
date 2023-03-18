@@ -1,5 +1,32 @@
 # Social Media API
 
+The API provides a variety of functionalities including fetching user profiles, following other users, uploading posts, deleting posts, liking posts, unliking previously liked posts, and commenting on posts.
+
+## Running the Web App using Docker
+This repository contains a Dockerfile that can be used to build and run the web app using Docker. Follow the instructions below to build and run the Docker container.
+
+### Prerequisites
+Before you can build and run the Docker container, you must have Docker installed on your system. If you do not already have Docker installed, follow the installation instructions for your platform from the [Docker documentation](https://docs.docker.com/get-docker/).
+
+### Building the Docker Image
+To build the Docker image, navigate to the root directory of the project where the Dockerfile is located and run the following command:
+
+```
+docker build -t web-app .
+```
+
+This command will build the Docker image and tag it with the name web-app.
+
+### Running the Docker Container
+To run the Docker container, use the following command:
+
+```
+docker run -p 8000:8000 web-app
+```
+
+This command will start the container and map port 8000 of the container to port 8000 of your host machine. You can now access the web app by navigating to http://localhost:8000 in your web browser.
+
+
 ## API Endpoints
 
 ### User Authentication
