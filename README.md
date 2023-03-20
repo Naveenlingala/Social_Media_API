@@ -28,6 +28,8 @@ This command will start the container and map port 8000 of the container to port
 
 
 ## API Endpoints
+### Account details
+- Naveen( username: naveen, password: 123456789 )
 
 ### User Authentication
 - POST [/api/authenticate](https://social-media-api-tm6v.onrender.com/api/authenticate)
