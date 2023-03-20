@@ -29,7 +29,18 @@ This command will start the container and map port 8000 of the container to port
 
 ## API Endpoints
 ### Account details
-- Naveen( username: naveen, password: 123456789 )
+- Naveen(username: naveen, password: 123456789)
+
+![image](https://user-images.githubusercontent.com/60232407/226263689-88def42a-8b9a-4a26-9802-04c75b2380a1.png)
+
+- Add jwt token to Authorization for each request
+
+![image](https://user-images.githubusercontent.com/60232407/226264070-1151b6fb-cfad-4b14-a6b4-cfa5f3920ce8.png)
+
+- Input values should added to the body(form-data) Example:-
+
+![image](https://user-images.githubusercontent.com/60232407/226264936-bb9f9e4e-392e-4162-8673-730b74bf7d80.png)
+
 
 ### User Authentication
 - POST [/api/authenticate](https://social-media-api-tm6v.onrender.com/api/authenticate)
