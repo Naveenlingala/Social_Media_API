@@ -28,8 +28,10 @@ This command will start the container and map port 8000 of the container to port
 
 
 ## API Endpoints
+> **_NOTE:_**: The Hosted Link can be tested using **Postman** 
 ### Account details
 - Naveen(username: naveen, password: 123456789)
+
 
 ![image](https://user-images.githubusercontent.com/60232407/226263689-88def42a-8b9a-4a26-9802-04c75b2380a1.png)
 
